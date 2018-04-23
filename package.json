@@ -23,6 +23,7 @@
     "color": "^3.0.0",
     "expo": "^25.0.0",
     "moment": "^2.21.0",
+    "prop-types": "^15.6.1",
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-extended-stylesheet": "^0.8.1"
