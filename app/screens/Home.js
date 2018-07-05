@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, KeyboardAvoidingView } from 'react-native';
+import { StatusBar } from 'react-native';
 
 import { Container } from '../components/Container';
 import { Logo } from '../components/Logo';
@@ -16,57 +16,57 @@ const TEMP_LAST_CONVERTED = new Date();
 const TEMP_CONVERSION_RATE = 0.79739;
 
 class Home extends Component {
-    handleChangeText = () => {
-        console.log('change text');
-    };
+  handleChangeText = () => {
+    console.log('change text');
+  };
 
-    handlePressBaseCurrency = () => {
-        console.log('press base currency');
-    };
+  handlePressBaseCurrency = () => {
+    console.log('press base currency');
+  };
 
-    handlePressQuoteCurrency = () => {
-        console.log('press quote currency');
-    };
+  handlePressQuoteCurrency = () => {
+    console.log('press quote currency');
+  };
 
-    handle = () => {
-        console.log('clear button pressed');
-    };
+  handle = () => {
+    console.log('clear button pressed');
+  };
 
-    handleOptionsPress = () => {
-        console.log('options press');
-    };
+  handleOptionsPress = () => {
+    console.log('options press');
+  };
 
-    render() {
-        return (
-            <Container>
-                <StatusBar backgroundColor="blue" barStyle="light-content" />
-                <Header onPress={this.handleOptionsPress} />
-                <KeyboardAvoidingView behavior="padding">
-                    <Logo />
-                    <InputWithButton
-                        buttonText={TEMP_BASE_CURRENCY}
-                        onPress={this.handlePressBaseCurrency}
-                        defaultValue={TEMP_BASE_PRICE}
-                        keyboardType="numeric"
-                        onChangeText={this.handleChangeText}
-                    />
-                    <InputWithButton
-                        editable={false}
-                        buttonText={TEMP_QUOTE_CURRENCY}
-                        onPress={this.handlePressQuoteCurrency}
-                        value={TEMP_QUOTE_PRICE}
-                    />
-                    <LastConverted
-                        date={TEMP_LAST_CONVERTED}
-                        base={TEMP_BASE_CURRENCY}
-                        quote={TEMP_QUOTE_CURRENCY}
-                        conversionRate={TEMP_CONVERSION_RATE}
-                    />
-                    <ClearButton text="clear" onPress={this.handle} />
-                </KeyboardAvoidingView>
-            </Container>
-        );
-    }
+  render() {
+    return (
+      <Container>
+        <StatusBar backgroundColor="blue" barStyle="light-content" />
+        <Header onPress={this.handleOptionsPress} />
+        <KeyboardAvoidingView behavior="padding">
+          <Logo />
+          <InputWithButton
+            buttonText={TEMP_BASE_CURRENCY}
+            onPress={this.handlePressBaseCurrency}
+            defaultValue={TEMP_BASE_PRICE}
+            keyboardType="numeric"
+            onChangeText={this.handleChangeText}
+          />
+          <InputWithButton
+            editable={false}
+            buttonText={TEMP_QUOTE_CURRENCY}
+            onPress={this.handlePressQuoteCurrency}
+            value={TEMP_QUOTE_PRICE}
+          />
+          <LastConverted
+            date={TEMP_LAST_CONVERTED}
+            base={TEMP_BASE_CURRENCY}
+            quote={TEMP_QUOTE_CURRENCY}
+            conversionRate={TEMP_CONVERSION_RATE}
+          />
+          <ClearButton text="clear" onPress={this.handle} />
+        </KeyboardAvoidingView>
+      </Container>
+    );
+  }
 }
 
 export default Home;
