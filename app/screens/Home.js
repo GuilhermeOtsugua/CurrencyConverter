@@ -3,14 +3,15 @@ import React, { Component } from 'react';
 import { KeyboardAvoidingView, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 
+import { connectAlert } from '../components/Alert';
 import { Container } from '../components/Container';
-import { Logo } from '../components/Logo';
-import { InputWithButton } from '../components/TextInput';
 import { ClearButton } from '../components/Button';
-import { LastConverted } from '../components/Text';
 import { Header } from '../components/Header';
+import { InputWithButton } from '../components/TextInput';
+import { LastConverted } from '../components/Text';
+import { Logo } from '../components/Logo';
 
-import { changeCurrencyAmount, swapCurrency } from '../actions/currencies';
+import { changeCurrencyAmount, swapCurrency, getInitialConversion } from '../actions/currencies';
 
 class Home extends Component {
   static propTypes = {
@@ -22,7 +23,20 @@ class Home extends Component {
     conversionRate: PropTypes.number,
     lastConvertedDate: PropTypes.object,
     primaryColor: PropTypes.string,
+    isFetching: PropTypes.bool,
+    currencyError: PropTypes.string,
+    alertWithType: PropTypes.func,
   };
+
+  componentWillMount() {
+    this.props.dispatch(getInitialConversion());
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currencyError && !this.props.currencyError) {
+      this.props.alertWithType('error', 'Error', nextProps.currencyError);
+    }
+  }
 
   handleChangeText = (text) => {
     this.props.dispatch(changeCurrencyAmount(text));
@@ -45,7 +59,10 @@ class Home extends Component {
   };
 
   render() {
-    const quotePrice = (this.props.amount * this.props.conversionRate).toFixed(2);
+    let quotePrice = '...';
+    if (!this.props.isFetching) {
+      quotePrice = (this.props.amount * this.props.conversionRate).toFixed(2);
+    }
 
     return (
       <Container backgroundColor={this.props.primaryColor}>
@@ -87,13 +104,15 @@ const mapStateToProps = (state) => {
   const rates = conversionSelector.rates || {};
 
   return {
-    baseCurrency,
-    quoteCurrency,
+    baseCurrency: state.currencies.baseCurrency,
+    quoteCurrency: state.currencies.quoteCurrency,
     amount: state.currencies.amount,
     conversionRate: rates[quoteCurrency] || 0,
     lastConvertedDate: conversionSelector.date ? new Date(conversionSelector.date) : new Date(),
     primaryColor: state.theme.primaryColor,
+    isFetching: conversionSelector.isFetching,
+    currencyError: state.currencies.error,
   };
 };
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(connectAlert(Home));
